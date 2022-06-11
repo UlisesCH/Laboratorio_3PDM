@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "504780311031",
+    "project_id": "laboratorio3-fee75",
+    "storage_bucket": "laboratorio3-fee75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504780311031:android:026b064f0610ecdb6f46f2",
+        "android_client_info": {
+          "package_name": "com.example.laboratio_3pdm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504780311031-jkfiukbe301cvr3c34f88g93pbphea5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs7z7o0QINOpziYDNbP7dV1AS2IH03FtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504780311031-jkfiukbe301cvr3c34f88g93pbphea5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
