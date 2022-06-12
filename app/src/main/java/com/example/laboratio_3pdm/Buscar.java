@@ -34,8 +34,7 @@ import retrofit2.Response;
 public class Buscar extends AppCompatActivity {
     //Variables a utilizar
     public EditText palabra;
-    public TextView ejemplo, tv_definicion;
-    public TextView ejemplo, NombreUsuario;
+    public TextView ejemplo, NombreUsuario,tv_definicion;
     public String Ejemplo, Audio;
     public Service servicioImplementado;
 

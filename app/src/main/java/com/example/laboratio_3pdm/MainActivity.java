@@ -56,31 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void ClickIniciar(View v){
-
-        String Correo = TxtCorreo.getText().toString();
-        String Contra = TxtContra.getText().toString();
-
-        autenticacion.signInWithEmailAndPassword(Correo, Contra)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    FirebaseUser usuario = autenticacion.getCurrentUser();
-                    Log.d("Usuario ", usuario.getEmail());
-
-                    datos(Correo);
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-    }
-
     public void datos(String UserCorreo){
 
         referenciData.child("USUARIOS").addValueEventListener(new ValueEventListener() {
