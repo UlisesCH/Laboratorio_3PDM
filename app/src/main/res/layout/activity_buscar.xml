@@ -6,28 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".Buscar">
 
+    <TextView
+        android:id="@+id/TxtNomUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/TxtPalabra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="41dp"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Palabra"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/TxtNomUsuario" />
 
     <Button
         android:id="@+id/BtnBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="60dp"
+        android:onClick="ClickBuscar"
         android:text="Buscar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.317"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TxtPalabra"
-        android:onClick="ClickBuscar"/>
+        app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
 
     <Button
         android:id="@+id/BtnReproducir"
@@ -49,4 +60,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnReproducir" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="63dp"
+        android:text="HISTORIAL"
+        android:onClick="btnHistorial"
+        app:layout_constraintStart_toEndOf="@+id/BtnBuscar"
+        app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,6 +56,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void ClickIniciar(View v){
+
+        String Correo = TxtCorreo.getText().toString();
+        String Contra = TxtContra.getText().toString();
+
+        autenticacion.signInWithEmailAndPassword(Correo, Contra)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    FirebaseUser usuario = autenticacion.getCurrentUser();
+                    Log.d("Usuario ", usuario.getEmail());
+
+                    datos(Correo);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+    }
+
     public void datos(String UserCorreo){
 
         referenciData.child("USUARIOS").addValueEventListener(new ValueEventListener() {
@@ -71,10 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
                         if(FBCorreo.equals(UserCorreo)){
 
+                            Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
+
                             Intent intent = new Intent(MainActivity.this, Buscar.class);
 
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
+                            intent.putExtra("PALABRA", "");
 
                             startActivity(intent);
 
@@ -90,32 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-    }
-
-    public void ClickIniciar(View v){
-
-        String Correo = TxtCorreo.getText().toString();
-        String Contra = TxtContra.getText().toString();
-
-        autenticacion.signInWithEmailAndPassword(Correo, Contra)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
-                    FirebaseUser usuario = autenticacion.getCurrentUser();
-                    Log.d("Usuario ", usuario.getEmail());
-
-                    datos(Correo);
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
 
     }
 
@@ -181,6 +183,21 @@ public class MainActivity extends AppCompatActivity {
 
         popRegistrar.show();
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = autenticacion.getCurrentUser();
+        if(currentUser != null){
+            Toast.makeText(this, "Sesion esta iniciada", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, Buscar.class);
+            i.putExtra("PALABRA","");
+
+            startActivity(i);
+        }
     }
 
 }
