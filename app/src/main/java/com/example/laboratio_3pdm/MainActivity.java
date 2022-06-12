@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Usuario ", usuario.getEmail());
 
                     Intent intent = new Intent(MainActivity.this, Buscar.class);
+                    intent.putExtra("PALABRA","");
                     startActivity(intent);
 
                 }
@@ -137,6 +138,20 @@ public class MainActivity extends AppCompatActivity {
 
         popRegistrar.show();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = autenticacion.getCurrentUser();
+        if(currentUser != null){
+            Toast.makeText(this, "Sesion esta iniciada", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, Buscar.class);
+            i.putExtra("PALABRA","");
+
+            startActivity(i);
+        }
     }
 
 }

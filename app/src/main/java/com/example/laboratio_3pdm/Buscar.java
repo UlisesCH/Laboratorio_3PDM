@@ -2,6 +2,7 @@ package com.example.laboratio_3pdm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,12 +10,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.laboratio_3pdm.modelo.Modelo;
 import com.example.laboratio_3pdm.modelo.Service;
+import com.example.laboratio_3pdm.modelo.modeloHistorial;
 import com.example.laboratio_3pdm.serviceUtils.apiUtils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +34,9 @@ public class Buscar extends AppCompatActivity {
     public String Ejemplo, Audio;
     public Service servicioImplementado;
 
+    private FirebaseDatabase database;
+    private DatabaseReference referenciaData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +45,23 @@ public class Buscar extends AppCompatActivity {
         palabra = findViewById(R.id.TxtPalabra);
         ejemplo = findViewById(R.id.TxtEjemplo);
 
+        //inicializacion de variables para firebase
+        database = FirebaseDatabase.getInstance();
+        referenciaData = database.getReference();
+
+        //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
+        if(!getIntent().getStringExtra("PALABRA").isEmpty()){
+            palabra.setText(getIntent().getStringExtra("PALABRA"));
+            Busqueda();
+        }
     }
 
     //accion del boton buscar
     public void ClickBuscar(View v){
+        Busqueda();
+    }
+
+    public void Busqueda(){
         //se almacela lo digitado
         String Palabra = palabra.getText().toString();
         //se obtienen la api
@@ -85,6 +107,10 @@ public class Buscar extends AppCompatActivity {
                         }
 
                     }
+                    //PARA LOS DATOS QUE SE MANDARAN A FIREBASE PARA HISTORIAL
+                    modeloHistorial h = new modeloHistorial();
+                    h.palabra = palabra.getText().toString();
+
 
                     //ciclo while para que recorra hasta que no este vacio
                     while (Ejemplo == null || Ejemplo == "null" || Ejemplo == "") {
@@ -106,6 +132,7 @@ public class Buscar extends AppCompatActivity {
 
                                 //asigna valor al texview
                                 ejemplo.setText(Ejemplo);
+                                h.ejemplo = Ejemplo;
 
                                 //rompe el ciclo
                                 break;
@@ -127,6 +154,54 @@ public class Buscar extends AppCompatActivity {
                         contD += 1;
                     }
 
+
+                    //variable para salir de un ciclo anidado en caso de encontrar algo
+                    boolean encontro = false;
+                    //PARA RECORRER TODA LA INFORMACION DE LA API
+                    for (Modelo itemsModelo:response.body()) {
+
+                        //PARA OBTENER PRONUNCIACION
+                        //RECORRER LA LISTA DE PHONETIC
+                        for(int i = 0; i < itemsModelo.phonetics.size();i++ ){
+                           //COMPROBAR QUE EL LA VARIABLE TEXT DE PHONETIC ESTE OBTENIENDO ALGO
+                            if(!(""+itemsModelo.phonetics.get(i).text).equals("null")
+                            &&!itemsModelo.phonetics.get(i).text.isEmpty() &&
+                                    !itemsModelo.phonetics.get(i).text.equals("null")
+                            && itemsModelo.phonetics.get(i).text != null){
+                                //LO GUARDAMOS PARA SER ENVIADO A FIREBASE AL HISTORIAL
+                                h.pronunciacion = itemsModelo.phonetics.get(i).text;
+                                break;
+                            }else{
+                                h.pronunciacion = "";
+                            }
+                        }
+
+                        //PARA OBTENER DEFINICION
+                        //RECORRER LA LISTA DE MEANING
+                        for(int i = 0; i< itemsModelo.meanings.size();i++){
+                            //RECORRER LA LISTE DE DEFINICIONES DENTRO DE MEANING
+                            for(int j = 0; j<itemsModelo.meanings.get(i).definitions.size();j++){
+                                //COMPROBAR QUE HALLA UNA DEFINICION
+                                if(!(""+itemsModelo.meanings.get(i).definitions.get(j).definition).equals("null")
+                                        && !itemsModelo.meanings.get(i).definitions.get(j).definition.isEmpty()
+                                && itemsModelo.meanings.get(i).definitions.get(j).definition != null
+                                && !itemsModelo.meanings.get(i).definitions.get(j).definition.equals("null")){
+                                    h.significado = itemsModelo.meanings.get(i).definitions.get(j).definition;
+                                    encontro = true;
+                                    break;
+                                }else{
+                                    h.significado = "";
+                                }
+                            }
+                            if(encontro){
+                                break;
+                            }
+                        }
+                    }
+
+                    //PARA GUARDAR LA PALABRA EN EL HISTORIAL
+                    referenciaData.child("HISTORIAL").child(h.palabra).setValue(h);
+
                 }
                 //al no obtener datos
                 else{
@@ -142,7 +217,6 @@ public class Buscar extends AppCompatActivity {
                 Log.d("Fallo >", String.valueOf(t));
             }
         });
-
     }
 
     //accion del boton reproducir
@@ -180,4 +254,8 @@ public class Buscar extends AppCompatActivity {
         }
     }
 
+    public void btnHistorial(View view) {
+        Intent i = new Intent(this, Historial.class);
+        startActivity(i);
+    }
 }
