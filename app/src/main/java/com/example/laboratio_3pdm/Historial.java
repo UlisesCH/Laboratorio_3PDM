@@ -24,6 +24,7 @@ public class Historial extends AppCompatActivity {
     private ArrayList<modeloHistorial> listData;
     public FirebaseDatabase database;
     public DatabaseReference referenciaData;
+    private String usuario = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,11 @@ public class Historial extends AppCompatActivity {
         lv_historial = (ListView) findViewById(R.id.lvHistorial);
         listData = new ArrayList<modeloHistorial>();
 
+        usuario = getIntent().getStringExtra("USUARIO");
+
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
-        referenciaData.child("HISTORIAL").addValueEventListener(listHistorial);
+        referenciaData.child("HISTORIAL").child(usuario).addValueEventListener(listHistorial);
 
         //EVENTO AL TOCAR ITEM
         lv_historial.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Buscar.class);
                     intent.putExtra("PALABRA","");
                     startActivity(intent);
-=======
                     datos(Correo);
 
 

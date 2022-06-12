@@ -16,6 +16,8 @@ import com.example.laboratio_3pdm.modelo.Modelo;
 import com.example.laboratio_3pdm.modelo.Service;
 import com.example.laboratio_3pdm.modelo.modeloHistorial;
 import com.example.laboratio_3pdm.serviceUtils.apiUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +38,9 @@ public class Buscar extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference referenciaData;
+    private String correoUsuario;
+    //EN ESTA VARIABLE ALMACENAREMOS SOLO LA PARTE DEL CORREO ANTES DEL @
+    private String correoAntesDeDominio = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,23 @@ public class Buscar extends AppCompatActivity {
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
+
+        //OBTENER EL EMAIL DEL USUARIO QUE INICIO SESION
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            correoUsuario = user.getEmail();
+            //OBTENER EL CORREO DEL USUARIO CON SESION INICIADA TODO LO QUE ESTA ANTES DEL @
+            for(int i = 0; i < correoUsuario.length();i++){
+                if(correoUsuario.charAt(i) == '@'){
+                    break;
+                }else{
+                    correoAntesDeDominio += correoUsuario.charAt(i);
+                }
+
+            }
+        }else{
+            correoUsuario = "";
+        }
 
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
         if(!getIntent().getStringExtra("PALABRA").isEmpty()){
@@ -199,8 +221,9 @@ public class Buscar extends AppCompatActivity {
                         }
                     }
 
+
                     //PARA GUARDAR LA PALABRA EN EL HISTORIAL
-                    referenciaData.child("HISTORIAL").child(h.palabra).setValue(h);
+                    referenciaData.child("HISTORIAL").child(correoAntesDeDominio).child(h.palabra).setValue(h);
 
                 }
                 //al no obtener datos
@@ -256,6 +279,7 @@ public class Buscar extends AppCompatActivity {
 
     public void btnHistorial(View view) {
         Intent i = new Intent(this, Historial.class);
+        i.putExtra("USUARIO",correoAntesDeDominio);
         startActivity(i);
     }
 }
