@@ -8,6 +8,9 @@ public class Phonetic {
     @SerializedName("audio")
     @Expose
     public String audio;
+    @SerializedName("text")
+    @Expose
+    public String text;
 
     public Phonetic(String audio) {
         this.audio = audio;
