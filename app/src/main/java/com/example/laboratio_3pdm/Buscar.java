@@ -49,7 +49,8 @@ public class Buscar extends AppCompatActivity {
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
-
+        
+        // Se asigna los valores enviados del Main
         NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
 
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
