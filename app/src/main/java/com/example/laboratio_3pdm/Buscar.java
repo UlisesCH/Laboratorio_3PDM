@@ -38,6 +38,7 @@ public class Buscar extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference referenciaData;
+    private FirebaseAuth auth;
     private String correoUsuario;
     //EN ESTA VARIABLE ALMACENAREMOS SOLO LA PARTE DEL CORREO ANTES DEL @
     private String correoAntesDeDominio = "";
@@ -53,9 +54,10 @@ public class Buscar extends AppCompatActivity {
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
+        auth = FirebaseAuth.getInstance();
 
         //OBTENER EL EMAIL DEL USUARIO QUE INICIO SESION
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = auth.getCurrentUser();
         if(user != null){
             correoUsuario = user.getEmail();
             //OBTENER EL CORREO DEL USUARIO CON SESION INICIADA TODO LO QUE ESTA ANTES DEL @
@@ -72,7 +74,10 @@ public class Buscar extends AppCompatActivity {
         }
 
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
-        if(!getIntent().getStringExtra("PALABRA").isEmpty()){
+        Log.d("PALABRA",""+getIntent().getStringExtra("PALABRA"));
+        if(!getIntent().getStringExtra("PALABRA").isEmpty()
+                && getIntent().getStringExtra("PALABRA") != null
+        && !(""+getIntent().getStringExtra("PALABRA")).equals("null")){
             palabra.setText(getIntent().getStringExtra("PALABRA"));
             Busqueda();
         }
@@ -281,5 +286,10 @@ public class Buscar extends AppCompatActivity {
         Intent i = new Intent(this, Historial.class);
         i.putExtra("USUARIO",correoAntesDeDominio);
         startActivity(i);
+    }
+
+    public void btnCerrarSesion(View view) {
+        auth.signOut();
+        finish();
     }
 }

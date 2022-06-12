@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         if(FBCorreo.equals(UserCorreo)){
 
                             Intent intent = new Intent(MainActivity.this, Buscar.class);
-
+                            intent.putExtra("PALABRA","");
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
 
@@ -106,11 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
                     FirebaseUser usuario = autenticacion.getCurrentUser();
                     Log.d("Usuario ", usuario.getEmail());
-
-
-                    Intent intent = new Intent(MainActivity.this, Buscar.class);
-                    intent.putExtra("PALABRA","");
-                    startActivity(intent);
+                    
                     datos(Correo);
 
 
