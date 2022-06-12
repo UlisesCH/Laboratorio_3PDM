@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -35,10 +36,14 @@ public class Perfil extends AppCompatActivity {
     private EditText et_nombre, et_carrera, et_due;
     private FirebaseDatabase database;
     private DatabaseReference referenciaData;
+    public FirebaseStorage storage;
+    private StorageReference reference;
     //EN ESTA VARIABLE ALMACENAREMOS SOLO LA PARTE DEL CORREO ANTES DEL @
     private String correoAntesDeDominio = "";
     private String correoUsuario;
     private FirebaseAuth auth;
+    public Uri urlImage;
+    private Usuario u;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,23 @@ public class Perfil extends AppCompatActivity {
         et_due = (EditText) findViewById(R.id.etPerfilDUE);
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        reference = storage.getReference();
         usuario();
         referenciaData = database.getReference("USUARIOS").child(correoAntesDeDominio);
         cargarDatos();
+
+
+
+        //EVENTO PARA CAMBIAR FOTO AL TOCARLA
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/");
+                startActivityForResult(intent,1);
+            }
+        });
 
     }
 
@@ -80,7 +99,7 @@ public class Perfil extends AppCompatActivity {
         referenciaData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Usuario u = snapshot.getValue(Usuario.class);
+                u = snapshot.getValue(Usuario.class);
                 Glide.with(getApplicationContext()).load(u.img).into(img);
                 et_nombre.setText(u.Nombre);
                 et_carrera.setText(u.Carrera);
@@ -92,6 +111,70 @@ public class Perfil extends AppCompatActivity {
                 Log.d("ONCANCELLED", "Failed to read value: "+error.toException());
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            urlImage = data.getData();
+            StorageReference file = reference.child("PERFILES").child(correoAntesDeDominio).child(urlImage.getLastPathSegment());
+            UploadTask subir = file.putFile(urlImage);
+            Task<Uri> uriTask = subir.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if(!task.isSuccessful()){
+                        throw task.getException();
+                    }
+                    return file.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    Uri urlDescarga = task.getResult();
+
+                    //ACTUALIZAR LA URL DE IMAGEN DEL PERFIL
+                    Usuario user = new Usuario();
+                    user.Nombre = u.Nombre;
+                    user.Carrera = u.Carrera;
+                    user.Correo = u.Correo;
+                    user.DUE = u.DUE;
+                    user.img = urlDescarga.toString();
+                    referenciaData.setValue(user)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(Perfil.this, "Imagen actualizada", Toast.LENGTH_SHORT).show();
+                                    cargarDatos();
+                                }
+                            });
+                }
+            });
+        }
+    }
+
+    public void btnModificar(View view){
+        //VALIDAR QUE LOS CAMPOS NO ESTEN VACIOS
+        if(!et_nombre.getText().toString().isEmpty() && !et_carrera.getText().toString().isEmpty()
+        && !et_due.getText().toString().isEmpty()){
+            Usuario user = new Usuario();
+            user.Nombre = et_nombre.getText().toString();
+            user.Carrera = et_carrera.getText().toString();
+            user.Correo = u.Correo;
+            user.DUE = et_due.getText().toString();
+            user.img = u.img;
+            referenciaData.setValue(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            cargarDatos();
+                            Toast.makeText(Perfil.this, "DATOS MODIFICADOS CORRECTAMENTE", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            Toast.makeText(this, "DEBE LLENAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
+        }
+        
     }
 
 }
