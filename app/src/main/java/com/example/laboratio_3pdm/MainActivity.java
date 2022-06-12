@@ -54,31 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void ClickIniciar(View v){
-
-        String Correo = TxtCorreo.getText().toString();
-        String Contra = TxtContra.getText().toString();
-
-        autenticacion.signInWithEmailAndPassword(Correo, Contra)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    FirebaseUser usuario = autenticacion.getCurrentUser();
-                    Log.d("Usuario ", usuario.getEmail());
-
-                    datos(Correo);
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-    }
-
     public void datos(String UserCorreo){
 
         referenciData.child("USUARIOS").addValueEventListener(new ValueEventListener() {
@@ -97,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(MainActivity.this, Buscar.class);
-
+                            intent.putExtra("PALABRA","");
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
                             intent.putExtra("Correo", FBCorreo);
@@ -117,6 +92,33 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void ClickIniciar(View v){
+
+        String Correo = TxtCorreo.getText().toString();
+        String Contra = TxtContra.getText().toString();
+
+        autenticacion.signInWithEmailAndPassword(Correo, Contra)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
+                    FirebaseUser usuario = autenticacion.getCurrentUser();
+                    Log.d("Usuario ", usuario.getEmail());
+
+                    datos(Correo);
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
 
     }
 
