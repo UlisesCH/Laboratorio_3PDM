@@ -23,7 +23,8 @@
             android:exported="false" />
         <activity
             android:name=".Historial"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Buscar"/>
         <activity
             android:name=".Buscar"
             android:exported="false" />
