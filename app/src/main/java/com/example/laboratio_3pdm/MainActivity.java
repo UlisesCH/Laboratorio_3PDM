@@ -1,10 +1,12 @@
 package com.example.laboratio_3pdm;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,10 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
-
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("PALABRA","");
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
+                            intent.putExtra("Correo", FBCorreo);
                             intent.putExtra("PALABRA", "");
 
                             startActivity(intent);
@@ -125,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void ClickRegistrar(View v){
 
-        Button btnEliminar = popRegistrar.findViewById(R.id.BtnReRegistrar);
-        btnEliminar.setOnClickListener(new View.OnClickListener() {
+        Button BtnReRegistrar = popRegistrar.findViewById(R.id.BtnReRegistrar);
+        BtnReRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -185,21 +184,6 @@ public class MainActivity extends AppCompatActivity {
 
         popRegistrar.show();
 
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = autenticacion.getCurrentUser();
-        if(currentUser != null){
-            Toast.makeText(this, "Sesion esta iniciada", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(this, Buscar.class);
-            i.putExtra("PALABRA","");
-
-            startActivity(i);
-        }
     }
 
 }

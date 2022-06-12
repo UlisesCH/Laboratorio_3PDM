@@ -348,4 +348,17 @@ public class Buscar extends AppCompatActivity {
         auth.signOut();
         finish();
     }
+
+    public void ClickPerfil(View view) {
+
+        Intent intent = new Intent(this, Perfil.class);
+
+        intent.putExtra("DUE", getIntent().getStringExtra("DUE"));
+        intent.putExtra("Nombre", getIntent().getStringExtra("Nombre"));
+        intent.putExtra("Correo", getIntent().getStringExtra("Correo"));
+        intent.putExtra("PALABRA", "");
+
+        startActivity(intent);
+
+    }
 }
