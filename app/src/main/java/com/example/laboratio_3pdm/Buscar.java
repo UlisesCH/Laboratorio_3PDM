@@ -50,6 +50,7 @@ public class Buscar extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
 
+        // Se asigna los valores enviados del Main
         NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
 
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
@@ -260,5 +261,18 @@ public class Buscar extends AppCompatActivity {
     public void btnHistorial(View view) {
         Intent i = new Intent(this, Historial.class);
         startActivity(i);
+    }
+
+    public void ClickPerfil(View view) {
+
+        Intent intent = new Intent(this, Perfil.class);
+
+        intent.putExtra("DUE", getIntent().getStringExtra("DUE"));
+        intent.putExtra("Nombre", getIntent().getStringExtra("Nombre"));
+        intent.putExtra("Correo", getIntent().getStringExtra("Correo"));
+        intent.putExtra("PALABRA", "");
+
+        startActivity(intent);
+
     }
 }
