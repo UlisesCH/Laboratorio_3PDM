@@ -10,9 +10,10 @@
         android:id="@+id/TxtNomUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="112dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,5 +72,16 @@
         android:onClick="btnHistorial"
         app:layout_constraintStart_toEndOf="@+id/BtnBuscar"
         app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
+
+    <Button
+        android:id="@+id/BtnPerfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Perfil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="ClickPerfil"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
