@@ -53,9 +53,9 @@
 
     <TextView
         android:id="@+id/TxtEjemplo"
-        android:layout_width="wrap_content"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="10dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,5 +71,26 @@
         android:onClick="btnHistorial"
         app:layout_constraintStart_toEndOf="@+id/BtnBuscar"
         app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:text="cerrar sesion"
+        android:onClick="btnCerrarSesion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDefinicion"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TxtEjemplo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
