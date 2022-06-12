@@ -54,6 +54,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void ClickIniciar(View v){
+
+        String Correo = TxtCorreo.getText().toString();
+        String Contra = TxtContra.getText().toString();
+
+        autenticacion.signInWithEmailAndPassword(Correo, Contra)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if (task.isSuccessful()){
+
+                        FirebaseUser usuario = autenticacion.getCurrentUser();
+                        Log.d("Usuario ", usuario.getEmail());
+
+                        datos(Correo);
+
+                    }else {
+                        Toast.makeText(MainActivity.this, "USUARIO NO REGISTRADO", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+    }
+
     public void datos(String UserCorreo){
 
         referenciData.child("USUARIOS").addValueEventListener(new ValueEventListener() {
@@ -66,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         String FBDUE = datos.child("DUE").getValue().toString();
                         String FBNombre = datos.child("Nombre").getValue().toString();
                         String FBCorreo = datos.child("Correo").getValue().toString();
+                        String FBCarrera = datos.child("Carrera").getValue().toString();
 
                         if(FBCorreo.equals(UserCorreo)){
 
@@ -76,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
                             intent.putExtra("Correo", FBCorreo);
+                            intent.putExtra("Carrera", FBCarrera);
                             intent.putExtra("PALABRA", "");
 
                             startActivity(intent);
