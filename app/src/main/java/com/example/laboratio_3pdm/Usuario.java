@@ -4,6 +4,7 @@ public class Usuario {
 
     public String DUE;
     public String Nombre;
+    public String Carrera;
     public String Correo;
 
 }
