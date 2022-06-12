@@ -53,6 +53,8 @@ public class Buscar extends AppCompatActivity {
         // Se asigna los valores enviados del Main
         NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
 
+        Log.d("Carrera ",getIntent().getStringExtra("Carrera"));
+
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
         if(!getIntent().getStringExtra("PALABRA").isEmpty()){
             palabra.setText(getIntent().getStringExtra("PALABRA"));
@@ -270,7 +272,7 @@ public class Buscar extends AppCompatActivity {
         intent.putExtra("DUE", getIntent().getStringExtra("DUE"));
         intent.putExtra("Nombre", getIntent().getStringExtra("Nombre"));
         intent.putExtra("Correo", getIntent().getStringExtra("Correo"));
-        intent.putExtra("PALABRA", "");
+        intent.putExtra("Carrera", getIntent().getStringExtra("Carrera"));
 
         startActivity(intent);
 

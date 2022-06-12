@@ -64,10 +64,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    FirebaseUser usuario = autenticacion.getCurrentUser();
-                    Log.d("Usuario ", usuario.getEmail());
+                    if (task.isSuccessful()){
 
-                    datos(Correo);
+                        FirebaseUser usuario = autenticacion.getCurrentUser();
+                        Log.d("Usuario ", usuario.getEmail());
+
+                        datos(Correo);
+
+                    }else {
+                        Toast.makeText(MainActivity.this, "USUARIO NO REGISTRADO", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         String FBDUE = datos.child("DUE").getValue().toString();
                         String FBNombre = datos.child("Nombre").getValue().toString();
                         String FBCorreo = datos.child("Correo").getValue().toString();
+                        String FBCarrera = datos.child("Carrera").getValue().toString();
 
                         if(FBCorreo.equals(UserCorreo)){
 
@@ -101,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("DUE", FBDUE);
                             intent.putExtra("Nombre", FBNombre);
                             intent.putExtra("Correo", FBCorreo);
+                            intent.putExtra("Carrera", FBCarrera);
                             intent.putExtra("PALABRA", "");
 
                             startActivity(intent);

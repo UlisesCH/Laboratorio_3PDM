@@ -28,7 +28,7 @@ public class Perfil extends AppCompatActivity {
     public Uri urlImage;
     public ImageView img;
 
-    public TextView DUE, NombreUsuario, Correo;
+    public TextView DUE, NombreUsuario, Correo, Carrera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +42,13 @@ public class Perfil extends AppCompatActivity {
         DUE = findViewById(R.id.TxtPerDUE);
         NombreUsuario = findViewById(R.id.TxtPerNombre);
         Correo = findViewById(R.id.TxtPerCorreo);
+        Carrera = findViewById(R.id.TxtPerCarrera);
 
         // Se asigna los valores enviados del Main
         DUE.setText(getIntent().getStringExtra("DUE"));
         NombreUsuario.setText(getIntent().getStringExtra("Nombre"));
         Correo.setText(getIntent().getStringExtra("Correo"));
+        Carrera.setText(getIntent().getStringExtra("Carrera"));
 
         CargarPerfil();
 
