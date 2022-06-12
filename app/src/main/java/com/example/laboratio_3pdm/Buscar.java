@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class Buscar extends AppCompatActivity {
     //Variables a utilizar
     public EditText palabra;
-    public TextView ejemplo;
+    public TextView ejemplo, NombreUsuario;
     public String Ejemplo, Audio;
     public Service servicioImplementado;
 
@@ -44,10 +44,13 @@ public class Buscar extends AppCompatActivity {
         //vinculacion de variables
         palabra = findViewById(R.id.TxtPalabra);
         ejemplo = findViewById(R.id.TxtEjemplo);
+        NombreUsuario = findViewById(R.id.TxtNomUsuario);
 
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
         referenciaData = database.getReference();
+
+        NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
 
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
         if(!getIntent().getStringExtra("PALABRA").isEmpty()){
@@ -84,7 +87,7 @@ public class Buscar extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                     //ciclo while para que recorra hasta que no este vacio
-                    while (Audio == null || Audio == "null" || Audio == "") {
+                    while (Audio == null || Audio.equals("null") || Audio.equals("")) {
 
                         //ciclo foreach para recorrido de datos
                         for (Modelo itemsModelo : response.body()) {
@@ -93,7 +96,7 @@ public class Buscar extends AppCompatActivity {
                             Audio = String.valueOf(itemsModelo.phonetics.get(contA).audio);
 
                             //compara que la variable sea diferente a ciertos parametros
-                            if (Audio != null && Audio != "null" && Audio != "") {
+                            if (Audio != null && !Audio.equals("null") && !Audio.equals("")) {
 
                                 //al serlo manda mensaje a consola
                                 Log.d("RESPUESTA >", String.valueOf(itemsModelo.phonetics.get(contA).audio));
@@ -113,7 +116,7 @@ public class Buscar extends AppCompatActivity {
 
 
                     //ciclo while para que recorra hasta que no este vacio
-                    while (Ejemplo == null || Ejemplo == "null" || Ejemplo == "") {
+                    while (Ejemplo == null || Ejemplo.equals("null") || Ejemplo.equals("")) {
 
                         //contador para los ejemplos
                         int contE = 0;
@@ -125,7 +128,7 @@ public class Buscar extends AppCompatActivity {
                             Ejemplo = String.valueOf(itemsModelo.meanings.get(contD).definitions.get(contE).example);
 
                             //compara que la variable sea diferente a ciertos parametros
-                            if (Ejemplo != null && Ejemplo != "null" && Ejemplo != "") {
+                            if (Ejemplo != null && !Ejemplo.equals("null") && !Ejemplo.equals("")) {
 
                                 //al serlo manda mensaje a consola
                                 Log.d("RESPUESTA >", String.valueOf(itemsModelo.meanings.get(contD).definitions.get(contE).example));
