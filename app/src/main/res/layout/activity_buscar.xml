@@ -6,28 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Buscar">
 
-    <TextView
-        android:id="@+id/TxtNomUsuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/TxtPalabra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="128dp"
         android:ems="10"
         android:hint="Palabra"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TxtNomUsuario" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/BtnBuscar"

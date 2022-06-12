@@ -6,5 +6,6 @@ public class Usuario {
     public String Nombre;
     public String Carrera;
     public String Correo;
+    public String img;
 
 }

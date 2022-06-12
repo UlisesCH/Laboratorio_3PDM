@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class Buscar extends AppCompatActivity {
     //Variables a utilizar
     public EditText palabra;
-    public TextView ejemplo, NombreUsuario,tv_definicion;
+    public TextView ejemplo,tv_definicion;
     public String Ejemplo, Audio;
     public Service servicioImplementado;
 
@@ -55,7 +55,6 @@ public class Buscar extends AppCompatActivity {
         palabra = findViewById(R.id.TxtPalabra);
         ejemplo = findViewById(R.id.TxtEjemplo);
         tv_definicion = (TextView) findViewById(R.id.tvDefinicion);
-        NombreUsuario = findViewById(R.id.TxtNomUsuario);
 
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
@@ -78,12 +77,6 @@ public class Buscar extends AppCompatActivity {
         }else{
             correoUsuario = "";
         }
-
-        // Se asigna los valores enviados del Main
-        NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
-
-        Log.d("Carrera ",getIntent().getStringExtra("Carrera"));
-
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
         Log.d("PALABRA",""+getIntent().getStringExtra("PALABRA"));
         if(!(""+getIntent().getStringExtra("PALABRA")).equals("null")
