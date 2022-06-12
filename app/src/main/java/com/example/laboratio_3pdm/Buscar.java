@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class Buscar extends AppCompatActivity {
     //Variables a utilizar
     public EditText palabra;
-    public TextView ejemplo, NombreUsuario,tv_definicion;
+    public TextView ejemplo,tv_definicion;
     public String Ejemplo, Audio;
     public Service servicioImplementado;
 
@@ -55,7 +55,6 @@ public class Buscar extends AppCompatActivity {
         palabra = findViewById(R.id.TxtPalabra);
         ejemplo = findViewById(R.id.TxtEjemplo);
         tv_definicion = (TextView) findViewById(R.id.tvDefinicion);
-        NombreUsuario = findViewById(R.id.TxtNomUsuario);
 
         //inicializacion de variables para firebase
         database = FirebaseDatabase.getInstance();
@@ -78,12 +77,6 @@ public class Buscar extends AppCompatActivity {
         }else{
             correoUsuario = "";
         }
-
-        // Se asigna los valores enviados del Main
-        NombreUsuario.setText(getIntent().getStringExtra("Nombre")+" "+getIntent().getStringExtra("DUE"));
-
-        Log.d("Carrera ",getIntent().getStringExtra("Carrera"));
-
         //SI SE LE HA MANDADO UN DATO DESDE OTRA ACTIVIDAD HACE LA BUSQUEDA
         Log.d("PALABRA",""+getIntent().getStringExtra("PALABRA"));
         if(!(""+getIntent().getStringExtra("PALABRA")).equals("null")
@@ -343,24 +336,17 @@ public class Buscar extends AppCompatActivity {
         Intent i = new Intent(this, Historial.class);
         i.putExtra("USUARIO",correoAntesDeDominio);
         startActivity(i);
-        finish();
     }
 
     public void btnCerrarSesion(View view) {
         auth.signOut();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
         finish();
     }
-
-    public void ClickPerfil(View view) {
-
-        Intent intent = new Intent(this, Perfil.class);
-
-        intent.putExtra("DUE", getIntent().getStringExtra("DUE"));
-        intent.putExtra("Nombre", getIntent().getStringExtra("Nombre"));
-        intent.putExtra("Correo", getIntent().getStringExtra("Correo"));
-        intent.putExtra("Carrera", getIntent().getStringExtra("Carrera"));
-
-        startActivity(intent);
-
+    public void btnPerfil(View view){
+        Intent i = new Intent(this, Perfil.class);
+        startActivity(i);
     }
+
 }
