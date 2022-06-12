@@ -19,8 +19,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseAuth autenticacion;
     public FirebaseDatabase database;
     public DatabaseReference referenciData;
+    public String [] datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +46,50 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         referenciData = database.getReference();
 
+        datos = new String[3];
+
         popRegistrar = new Dialog(this);
         popRegistrar.setContentView(R.layout.pop_registrar);
 
         TxtCorreo = findViewById(R.id.TxtCorreo);
         TxtContra = findViewById(R.id.TxtContra);
+
+    }
+
+    public void datos(String UserCorreo){
+
+        referenciData.child("USUARIOS").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+
+                    for (DataSnapshot datos: snapshot.getChildren()) {
+
+                        String FBDUE = datos.child("DUE").getValue().toString();
+                        String FBNombre = datos.child("Nombre").getValue().toString();
+                        String FBCorreo = datos.child("Correo").getValue().toString();
+
+                        if(FBCorreo.equals(UserCorreo)){
+
+                            Intent intent = new Intent(MainActivity.this, Buscar.class);
+
+                            intent.putExtra("DUE", FBDUE);
+                            intent.putExtra("Nombre", FBNombre);
+
+                            startActivity(intent);
+
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 
@@ -62,12 +105,15 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
                     FirebaseUser usuario = autenticacion.getCurrentUser();
-
                     Log.d("Usuario ", usuario.getEmail());
+
 
                     Intent intent = new Intent(MainActivity.this, Buscar.class);
                     intent.putExtra("PALABRA","");
                     startActivity(intent);
+=======
+                    datos(Correo);
+
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -88,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText TxtDue = popRegistrar.findViewById(R.id.TxtDUE),
                          TxtNombre = popRegistrar.findViewById(R.id.TxtNombre),
+                         TxtCarrera = popRegistrar.findViewById(R.id.TxtCarrera),
                          TxtReCorreo = popRegistrar.findViewById(R.id.TxtReCorreo),
                          TxtReContra = popRegistrar.findViewById(R.id.TxtReContra);
 
@@ -107,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 usuario.DUE = TxtDue.getText().toString();
                                 usuario.Nombre = TxtNombre.getText().toString();
+                                usuario.Carrera = TxtCarrera.getText().toString();
                                 usuario.Correo = Correo;
 
                                 referenciData.child("USUARIOS").child(String.valueOf(usuario.DUE)).setValue(usuario);
@@ -115,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 TxtDue.setText("");
                                 TxtNombre.setText("");
+                                TxtCarrera.setText("");
                                 TxtReContra.setText("");
                                 TxtReCorreo.setText("");
                                 TxtCorreo.setText(Correo);
