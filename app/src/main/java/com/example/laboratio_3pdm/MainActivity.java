@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseDatabase database;
     public DatabaseReference referenciData;
     public String [] datos;
+    private String correoAntesDeDominio = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,16 @@ public class MainActivity extends AppCompatActivity {
                                                 usuario.Correo = Correo;
                                                 usuario.img = "https://firebasestorage.googleapis.com/v0/b/laboratorio3-fee75.appspot.com/o/perfil.png?alt=media&token=fe95c870-7e30-4e89-bb36-4332a5b131ed";
 
-                                                referenciData.child("USUARIOS").child(String.valueOf(usuario.DUE)).setValue(usuario);
+                                                //OBTENER EL CORREO DEL USUARIO CON SESION INICIADA TODO LO QUE ESTA ANTES DEL @
+                                                for(int i = 0; i < Correo.length();i++){
+                                                    if(Correo.charAt(i) == '@'){
+                                                        break;
+                                                    }else{
+                                                        correoAntesDeDominio += Correo.charAt(i);
+                                                    }
+
+                                                }
+                                                referenciData.child("USUARIOS").child(String.valueOf(correoAntesDeDominio)).setValue(usuario);
 
                                                 Toast.makeText(MainActivity.this, "USUARIO CREADO CORRECTAMENTE", Toast.LENGTH_SHORT).show();
 
@@ -158,7 +168,9 @@ public class MainActivity extends AppCompatActivity {
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(MainActivity.this, "USUARIO NO FUE CREADO CORRECTAMENTE "+e.toString(), Toast.LENGTH_SHORT).show();
+                                    if(e.toString().equals("com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.")){
+                                        Toast.makeText(MainActivity.this, "EL CORREO YA SE ENCUENTRA REGISTRADO CON UNA CUENTA", Toast.LENGTH_LONG).show();
+                                    }
                                     Log.d("error", e.toString());
                                 }
                             });
