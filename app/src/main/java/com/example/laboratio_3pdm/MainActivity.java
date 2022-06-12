@@ -72,16 +72,19 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), Buscar.class);
                                 intent.putExtra("PALABRA", "");
                                 startActivity(intent);
+                                finish();
 
-                            }else {
-                                Toast.makeText(MainActivity.this, "USUARIO NO REGISTRADO", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    Log.d("E",e.toString());
+                    if(e.toString().equals("com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted.")){
+                        Toast.makeText(MainActivity.this, "CORREO NO REGISTRADO", Toast.LENGTH_SHORT).show();
+                    }else if(e.toString().equals("com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password.")){
+                        Toast.makeText(MainActivity.this, "CONTRASEÑA INCORRECTA", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

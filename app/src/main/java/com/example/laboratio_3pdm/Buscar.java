@@ -336,11 +336,12 @@ public class Buscar extends AppCompatActivity {
         Intent i = new Intent(this, Historial.class);
         i.putExtra("USUARIO",correoAntesDeDominio);
         startActivity(i);
-        finish();
     }
 
     public void btnCerrarSesion(View view) {
         auth.signOut();
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
         finish();
     }
     public void btnPerfil(View view){
