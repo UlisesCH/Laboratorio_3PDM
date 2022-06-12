@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "SESION INICIADA", Toast.LENGTH_SHORT).show();
                     FirebaseUser usuario = autenticacion.getCurrentUser();
                     Log.d("Usuario ", usuario.getEmail());
-                    
+
                     datos(Correo);
 
 
