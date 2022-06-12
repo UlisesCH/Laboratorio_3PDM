@@ -55,34 +55,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ClickIniciar(View v){
+        //VALIDAR QUE CAMPOS NO ESTEN VACIOS
+        if(!TxtCorreo.getText().toString().isEmpty() && !TxtContra.getText().toString().isEmpty()){
+            String Correo = TxtCorreo.getText().toString();
+            String Contra = TxtContra.getText().toString();
 
-        String Correo = TxtCorreo.getText().toString();
-        String Contra = TxtContra.getText().toString();
+            autenticacion.signInWithEmailAndPassword(Correo, Contra)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-        autenticacion.signInWithEmailAndPassword(Correo, Contra)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            if (task.isSuccessful()){
+
+                                FirebaseUser usuario = autenticacion.getCurrentUser();
+                                Log.d("Usuario ", usuario.getEmail());
+                                Intent intent = new Intent(getApplicationContext(), Buscar.class);
+                                intent.putExtra("PALABRA", "");
+                                startActivity(intent);
+
+                            }else {
+                                Toast.makeText(MainActivity.this, "USUARIO NO REGISTRADO", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    if (task.isSuccessful()){
-
-                        FirebaseUser usuario = autenticacion.getCurrentUser();
-                        Log.d("Usuario ", usuario.getEmail());
-                        Intent intent = new Intent(getApplicationContext(), Buscar.class);
-                        intent.putExtra("PALABRA", "");
-                        startActivity(intent);
-
-                    }else {
-                        Toast.makeText(MainActivity.this, "USUARIO NO REGISTRADO", Toast.LENGTH_SHORT).show();
-                    }
+                public void onFailure(@NonNull Exception e) {
 
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+            });
 
-                    }
-                });
+        }else{
+            Toast.makeText(this, "DEBE DE LLENAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -140,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                                                 TxtCarrera.setText("");
                                                 TxtReContra.setText("");
                                                 TxtReCorreo.setText("");
+                                                et_segundaContrasenia.setText("");
                                                 TxtCorreo.setText(Correo);
                                                 TxtContra.setText(Contra);
 
