@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,12 +18,10 @@ import com.example.laboratio_3pdm.modelo.modeloHistorial;
 import com.example.laboratio_3pdm.serviceUtils.apiUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -108,85 +105,11 @@ public class Buscar extends AppCompatActivity {
                 Ejemplo = null;
                 Audio = null;
 
-                //contadores para realizar el recorrido
-                int contA = 0;
-                int contD = 0;
-
                 //compara si se ha obtenido datos
                 if (response.isSuccessful()) {
                     //PARA LOS DATOS QUE SE MANDARAN A FIREBASE PARA HISTORIAL
                     modeloHistorial h = new modeloHistorial();
                     h.palabra = palabra.getText().toString();
-
-                    /*//ciclo while para que recorra hasta que no este vacio
-                    while (Audio == null || Audio == "null" || Audio == "") {
-                    //ciclo while para que recorra hasta que no este vacio
-                    while (Audio == null || Audio.equals("null") || Audio.equals("")) {
-
-                        //ciclo foreach para recorrido de datos
-                        for (Modelo itemsModelo : response.body()) {
-
-                            //se asigna valor a la variable
-                            Audio = String.valueOf(itemsModelo.phonetics.get(contA).audio);
-
-                            //compara que la variable sea diferente a ciertos parametros
-                            if (Audio != null && !Audio.equals("null") && !Audio.equals("")) {
-
-                                //al serlo manda mensaje a consola
-                                Log.d("RESPUESTA >", String.valueOf(itemsModelo.phonetics.get(contA).audio));
-
-                                //rompe el ciclo
-                                break;
-
-                            }
-                            //aumenta el valor al contador del audio
-                            contA += 1;
-                        }
-
-                    }
-
-                    //ciclo while para que recorra hasta que no este vacio
-                    while (Ejemplo == null || Ejemplo.equals("null") || Ejemplo.equals("")) {
-
-                        //contador para los ejemplos
-                        int contE = 0;
-
-                        //ciclo foreach para recorrido de datos
-                        for (Modelo itemsModelo : response.body()) {
-
-                            //se asigna valor a la variable
-                            Ejemplo = String.valueOf(itemsModelo.meanings.get(contD).definitions.get(contE).example);
-
-                            //compara que la variable sea diferente a ciertos parametros
-                            if (Ejemplo != null && !Ejemplo.equals("null") && !Ejemplo.equals("")) {
-
-                                //al serlo manda mensaje a consola
-                                Log.d("RESPUESTA >", String.valueOf(itemsModelo.meanings.get(contD).definitions.get(contE).example));
-
-                                //asigna valor al texview
-                                ejemplo.setText(Ejemplo);
-                                h.ejemplo = Ejemplo;
-
-                                //rompe el ciclo
-                                break;
-
-                            }
-                            //aumenta el valor al contador del ejemplo
-                            contE += 1;
-
-                            //compara si el contador es igual al tamaño del arreglo
-                            if (contE == response.body().size()) {
-
-                                //al serlo rompe el ciclo
-                                break;
-                            }
-
-                        }
-
-                        //aumenta el valor al contador del definitions
-                        contD += 1;
-                    }*/
-
 
                     //variable para salir de un ciclo anidado en caso de encontrar algo
                     boolean encontro = false;
@@ -205,8 +128,6 @@ public class Buscar extends AppCompatActivity {
                                 Audio = String.valueOf(itemsModelo.phonetics.get(i).audio);
                                 break;
 
-                            }else{
-                                Audio = null;
                             }
                         }
 
@@ -224,9 +145,6 @@ public class Buscar extends AppCompatActivity {
                                     h.ejemplo = itemsModelo.meanings.get(i).definitions.get(j).example;
                                     break;
 
-                                }else{
-                                    ejemplo.setText("No se encontro un ejemplo para la palabra "+"\""+palabra.getText()+"\"");
-                                    h.ejemplo = ejemplo.getText().toString();
                                 }
                             }
                         }
@@ -244,9 +162,6 @@ public class Buscar extends AppCompatActivity {
                                 h.pronunciacion = itemsModelo.phonetics.get(i).text;
                                 textPronunciacion = itemsModelo.phonetics.get(i).text;
                                 break;
-                            }else{
-                                textPronunciacion = "No se encontro pronunciacion para la palabra";
-                                h.pronunciacion = "";
                             }
                         }
 
@@ -264,9 +179,6 @@ public class Buscar extends AppCompatActivity {
                                     tv_definicion.setText("Definitions: "+itemsModelo.meanings.get(i).definitions.get(j).definition);
                                     encontro = true;
                                     break;
-                                }else{
-                                    tv_definicion.setText("No se encontro una deficion para "+"\""+palabra.getText()+"\"");
-                                    h.significado = tv_definicion.getText().toString();
                                 }
                             }
                             if(encontro){
@@ -284,6 +196,9 @@ public class Buscar extends AppCompatActivity {
                 else{
                     //se asigna valor
                     ejemplo.setText("Palabra no encontrada");
+
+                    Toast.makeText(Buscar.this, "PALABRA NO ENCONTRADA", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -302,7 +217,9 @@ public class Buscar extends AppCompatActivity {
         //si audio llega vacio
         if (Audio == null){
             //se asigna valor
-            ejemplo.setText("Audio no encontrada");
+            ejemplo.setText("Audio no encontrado");
+
+            Toast.makeText(Buscar.this, "AUDIO NO ENCONTRADO", Toast.LENGTH_SHORT).show();
         }
         //de lo contrario puede reproducir
         else {

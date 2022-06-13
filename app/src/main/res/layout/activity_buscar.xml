@@ -4,30 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C2DED1"
     tools:context=".Buscar">
 
     <EditText
         android:id="@+id/TxtPalabra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/ic_palabra"
+        android:drawableTint="#FF9800"
         android:ems="10"
         android:hint="Palabra"
         android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <Button
         android:id="@+id/BtnBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="60dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/ic_buscar"
+        android:drawableTint="#C2DED1"
         android:onClick="ClickBuscar"
         android:text="Buscar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
+        android:textColor="#C2DED1"
+        android:textColorHint="#C2DED1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
 
@@ -35,19 +45,26 @@
         android:id="@+id/BtnReproducir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="118dp"
+        android:layout_marginTop="180dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/ic_reproducir"
+        android:drawableTint="#C2DED1"
+        android:onClick="ClickReproducir"
         android:text="Reproducir"
+        android:textColor="#C2DED1"
+        android:textColorHint="#C2DED1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnBuscar"
-        android:onClick="ClickReproducir"/>
+        app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
 
     <TextView
         android:id="@+id/TxtEjemplo"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:text="TextView"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/BtnReproducir" />
@@ -56,21 +73,28 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="63dp"
-        android:text="HISTORIAL"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="40dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/ic_historial"
+        android:drawableTint="#C2DED1"
         android:onClick="btnHistorial"
-        app:layout_constraintStart_toEndOf="@+id/BtnBuscar"
+        android:text="HISTORIAL"
+        android:textColor="#C2DED1"
+        android:textColorHint="#C2DED1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TxtPalabra" />
 
     <Button
 
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:text="cerrar sesion"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#C10404"
+        android:drawableRight="@drawable/ic_cerrar_sesion"
+        android:drawableTint="#C2DED1"
         android:onClick="btnCerrarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,18 +105,35 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="TextView"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TxtEjemplo" />
 
     <Button
         android:id="@+id/button3"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FF9800"
+        android:drawableLeft="@drawable/ic_perfil"
+        android:drawableTint="#C2DED1"
+        android:onClick="btnPerfil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="35dp"
-        android:text="perfil"
-        android:onClick="btnPerfil"
+        android:layout_marginTop="90dp"
+        android:text="Buscardor De Palabra"
+        android:textColor="#000000"
+        android:textColorHint="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
